@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# Define the 25 tools and their explanations
+# Define the 25 tools, their explanations, and demo costs
 tools = [
     "Ad Marketing Platform",
     "Email Platform",
@@ -58,9 +58,38 @@ tool_explanations = {
     "Publishing Platform": "Tools for publishing and distributing content, such as Medium or WordPress.",
 }
 
+# Demo costs for each tool
+tool_costs = {
+    "Ad Marketing Platform": 120,  # Monthly cost in USD
+    "Email Platform": 50,
+    "Text/Phone Platform": 30,
+    "Website Platform": 20,
+    "Hosting Platform": 15,
+    "E-commerce Platform": 100,
+    "Landing Page Platform": 40,
+    "Messaging Marketing Platform": 25,
+    "Payment Platform": 10,
+    "Booking Platform": 15,
+    "Webinar Platform": 50,
+    "Course Platform": 70,
+    "Podcast Platform": 30,
+    "CMS/CRM Platform": 200,
+    "Video Host Platform": 25,
+    "Storage Platform": 10,
+    "Document Platform": 5,
+    "Automation Platform": 20,
+    "Customer Service Platform": 60,
+    "Tracking & Metrics Platform": 100,
+    "Graphic Design Platform": 13,
+    "Video Design Platform": 30,
+    "Copy/Script Design Platform": 10,
+    "Separate Engine Platform": 200,
+    "Publishing Platform": 25,
+}
+
 # Sidebar for navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Select a page", ["Form", "Tool Explanations"])
+page = st.sidebar.radio("Select a page", ["Form", "Tool Explanations", "Cost Calculator"])
 
 # Form Page
 if page == "Form":
@@ -103,5 +132,32 @@ if page == "Tool Explanations":
         st.subheader(tool)
         st.write(explanation)
 
+# Cost Calculator Page
+if page == "Cost Calculator":
+    st.title("Cost Calculator")
+    st.write("Calculate the total monthly, annual, and 5-year costs for the tools.")
+
+    # Cost breakdown table
+    st.subheader("Demo Cost Breakdown")
+    cost_data = pd.DataFrame(
+        {
+            "Tool": tools,
+            "Monthly Cost (USD)": [tool_costs[tool] for tool in tools],
+            "Annual Cost (USD)": [tool_costs[tool] * 12 for tool in tools],
+            "5-Year Cost (USD)": [tool_costs[tool] * 12 * 5 for tool in tools],
+        }
+    )
+    st.dataframe(cost_data)
+
+    # Total costs
+    total_monthly = sum(tool_costs.values())
+    total_annual = total_monthly * 12
+    total_5_year = total_annual * 5
+
+    st.subheader("Total Costs")
+    st.write(f"**Total Monthly Cost:** ${total_monthly}")
+    st.write(f"**Total Annual Cost:** ${total_annual}")
+    st.write(f"**Total 5-Year Cost:** ${total_5_year}")
+
 # Footer
-st.sidebar.info("Use the sidebar to navigate between the form and explanations.")
+st.sidebar.info("Use the sidebar to navigate between the form, explanations, and cost calculator.")
